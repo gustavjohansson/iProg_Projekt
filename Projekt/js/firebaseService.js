@@ -1,36 +1,24 @@
+carbonListApp.factory('FirebaseAccount',function ($resource, $cookieStore, $cookies, $firebaseObject, $firebaseArray, $firebaseAuth) {
 
+  var _this = this;
 
-dinnerPlannerApp.factory("UserItemAdd",
-function($firebaseObject) {
-
-  return function(username, item, directory) {
-
-    delete item.$promise;
-    delete item.$resolved;
-    delete item.$$hashKey;
+  this.ItemAdd = function(username, item, directory) {
+    console.log("FirebaseAccount.ItemAdd")
+    item = this.editItem(item);
 
     // create a reference to the database node where we will store our data
     var ref = firebase.database().ref("users");
     var profileRef = ref.child(username).child("current list").child("items - " + directory).child(item.id).set({
       itemInfo: item
     });
-  }
-}
-);
+  };
 
-
-dinnerPlannerApp.factory("UserArchiveList",
-function($firebaseObject) {
-
-  return function(username, completelist, date, totCarbon, avgCarbon) {
-
+  this.ArchiveList = function(username, completelist, date, totCarbon, avgCarbon) {
+    console.log("FirebaseAccount.ArchiveList")
     for (item in completelist) {
       delete completelist[item].$$hashKey;
     }
-
-    delete item.$promise;
-    delete item.$resolved;
-    delete item.$$hashKey;
+    item = this.editItem(item);
 
     // create a reference to the database node where we will store our data
     var ref = firebase.database().ref("users");
@@ -39,74 +27,46 @@ function($firebaseObject) {
       totalCO2: totCarbon,
       snittCO2: avgCarbon
     });
+  };
 
-  }
-}
-);
-
-
-dinnerPlannerApp.factory("UserItemRearrange",
-function($firebaseObject, $firebaseArray, UserItemRemove, UserItemAdd) {
-
-  return function(username, item, directoryFrom, directoryTo) {
-
-    delete item.$promise;
-    delete item.$resolved;
-    delete item.$$hashKey;
+  this.ItemRearrange = function(username, item, directoryFrom, directoryTo) {
+    console.log("FirebaseAccount.ItemRearrange")
+    item = this.editItem(item);
 
     // create a reference to the database node where we will store our data
     var ref = firebase.database().ref("users");
     var movingObject = $firebaseObject(ref.child(username).child("current list").child("items - " + directoryFrom).child(item.id));
 
     movingObject.$loaded().then(function() {
-      UserItemRemove(username, item, directoryFrom);
-      UserItemAdd(username, movingObject.itemInfo, directoryTo);
+      _this.ItemRemove(username, item, directoryFrom);
+      _this.ItemAdd(username, movingObject.itemInfo, directoryTo);
     });
+  };
 
-
-  }
-}
-);
-
-dinnerPlannerApp.factory("UserItemRemove",
-function($firebaseObject) {
-
-  return function(username, item, directory) {
-    delete item.$promise;
-    delete item.$resolved;
-    delete item.$$hashKey;
+  this.ItemRemove = function(username, item, directory) {
+    console.log("FirebaseAccount.ItemRemove")
+    item = this.editItem(item);
 
     // create a reference to the database node where we will store our data
     var ref = firebase.database().ref("users");
     var profileRef = ref.child(username).child("current list").child("items - " + directory).child(item.id).remove();
 
-  }
-}
-);
+  };
 
 
-dinnerPlannerApp.factory("UserItemClear",
-function($firebaseObject) {
-
-  return function(username, directory) {
-
+  this.ItemClear = function(username, directory) {
+    console.log("FirebaseAccount.ItemClear")
     // create a reference to the database node where we will store our data
     var ref = firebase.database().ref("users");
     var profileRef = ref.child(username).child("current list").child("items - " + directory).remove();
 
-  }
-}
-);
+  };
 
 
-dinnerPlannerApp.factory("UserItemModify",
-function($firebaseObject, UserItemAdd) {
 
-  return function(username, item, directory) {
-
-    delete item.$promise;
-    delete item.$resolved;
-    delete item.$$hashKey;
+  this.ItemModify = function(username, item, directory) {
+    console.log("FirebaseAccount.ItemModify")
+    item = this.editItem(item);
 
     // create a reference to the database node where we will store our data
     var ref = firebase.database().ref("users");
@@ -115,38 +75,191 @@ function($firebaseObject, UserItemAdd) {
     });
 
     if (directory != undefined) {
-      UserItemAdd(username, item, directory);
+      _this.ItemAdd(username, item, directory);
     }
-
-  }
-}
-);
+  };
 
 
-dinnerPlannerApp.factory("Download", ["$firebaseArray",
-function($firebaseObject) {
-  return function(username, directory) {
+  this.Download = function(username, directory) {
+    console.log("FirebaseAccount.Download")
     // create a reference to the database node where we will store our data
     var ref = firebase.database().ref("users");
     var profileRef = ref.child(username).child(directory);
 
-    return $firebaseObject(profileRef);
-  }
-}
-]);
+    return $firebaseArray(profileRef);
+  };
 
 
-dinnerPlannerApp.factory("Auth", ["$firebaseAuth",
+    this.Auth = function() {
+      console.log("FirebaseAccount.Auth")
+      return $firebaseAuth();
+    };
+
+
+  this.editItem = function(item) {
+    console.log("editar detta item")
+    delete item.$promise;
+    delete item.$resolved;
+    delete item.$$hashKey;
+    return item;
+  };
+
+  return this;
+})
+
+
+
+
+
+
+
+
+
+
+//
+//
+// carbonListApp.factory("UserItemAdd",
+// function($firebaseObject) {
+//
+//   return function(username, item, directory) {
+//
+//     delete item.$promise;
+//     delete item.$resolved;
+//     delete item.$$hashKey;
+//
+//     // create a reference to the database node where we will store our data
+//     var ref = firebase.database().ref("users");
+//     var profileRef = ref.child(username).child("current list").child("items - " + directory).child(item.id).set({
+//       itemInfo: item
+//     });
+//   }
+// }
+// );
+//
+//
+// carbonListApp.factory("UserArchiveList",
+// function($firebaseObject) {
+//
+//   return function(username, completelist, date, totCarbon, avgCarbon) {
+//
+//     for (item in completelist) {
+//       delete completelist[item].$$hashKey;
+//     }
+//
+//     delete item.$promise;
+//     delete item.$resolved;
+//     delete item.$$hashKey;
+//
+//     // create a reference to the database node where we will store our data
+//     var ref = firebase.database().ref("users");
+//     var profileRef = ref.child(username).child("saved lists").child(date).set({
+//       items: completelist,
+//       totalCO2: totCarbon,
+//       snittCO2: avgCarbon
+//     });
+//
+//   }
+// }
+// );
+//
+//
+// carbonListApp.factory("UserItemRearrange",
+// function($firebaseObject, $firebaseArray, UserItemRemove, UserItemAdd) {
+//
+//   return function(username, item, directoryFrom, directoryTo) {
+//
+//     delete item.$promise;
+//     delete item.$resolved;
+//     delete item.$$hashKey;
+//
+//     // create a reference to the database node where we will store our data
+//     var ref = firebase.database().ref("users");
+//     var movingObject = $firebaseObject(ref.child(username).child("current list").child("items - " + directoryFrom).child(item.id));
+//
+//     movingObject.$loaded().then(function() {
+//       UserItemRemove(username, item, directoryFrom);
+//       UserItemAdd(username, movingObject.itemInfo, directoryTo);
+//     });
+//
+//
+//   }
+// }
+// );
+//
+// carbonListApp.factory("UserItemRemove",
+// function($firebaseObject) {
+//
+//   return function(username, item, directory) {
+//     delete item.$promise;
+//     delete item.$resolved;
+//     delete item.$$hashKey;
+//
+//     // create a reference to the database node where we will store our data
+//     var ref = firebase.database().ref("users");
+//     var profileRef = ref.child(username).child("current list").child("items - " + directory).child(item.id).remove();
+//
+//   }
+// }
+// );
+//
+//
+// carbonListApp.factory("UserItemClear",
+// function($firebaseObject) {
+//
+//   return function(username, directory) {
+//
+//     // create a reference to the database node where we will store our data
+//     var ref = firebase.database().ref("users");
+//     var profileRef = ref.child(username).child("current list").child("items - " + directory).remove();
+//
+//   }
+// }
+// );
+//
+//
+// carbonListApp.factory("UserItemModify",
+// function($firebaseObject, UserItemAdd) {
+//
+//   return function(username, item, directory) {
+//
+//     delete item.$promise;
+//     delete item.$resolved;
+//     delete item.$$hashKey;
+//
+//     // create a reference to the database node where we will store our data
+//     var ref = firebase.database().ref("users");
+//     var profileRef = ref.child(username).child("modified items").child(item.id).set({
+//       itemInfo: item
+//     });
+//
+//     if (directory != undefined) {
+//       UserItemAdd(username, item, directory);
+//     }
+//
+//   }
+// }
+// );
+//
+//
+// carbonListApp.factory("Download", ["$firebaseArray",
+// function($firebaseObject) {
+//   return function(username, directory) {
+//     // create a reference to the database node where we will store our data
+//     var ref = firebase.database().ref("users");
+//     var profileRef = ref.child(username).child(directory);
+//
+//     return $firebaseObject(profileRef);
+//   }
+// }
+// ]);
+
+
+carbonListApp.factory("Auth", ["$firebaseAuth",
 function($firebaseAuth) {
   return $firebaseAuth();
 }
 ]);
 
-dinnerPlannerApp.factory("DatabaseOperation", ["$firebaseAuth",
-function($firebaseAuth) {
-  return $firebaseAuth();
-}
-]);
 
 
 
@@ -200,7 +313,7 @@ function($firebaseAuth) {
 
 
 // FUNKA BRA
-// dinnerPlannerApp.factory("UserItems",
+// carbonListApp.factory("UserItems",
 // function($firebaseObject) {
 //
 //   return function(username, item, directory) {
@@ -213,7 +326,7 @@ function($firebaseAuth) {
 //     // OM NÅGON UNDEFINED, ANVÄND AMOUNT ELLER UNIT FRÅN ITEM, DVS SPECIALITEM SOM DU TAR IN.
 //     // DET ÄR JU DET AMOUNT/UNIT SOM SATT INNAN.
 //     // //
-//     // Dinner.Dish.get({ingredient:item.id,amount:amount,unit:unit},function(data){
+//     // Carbon.APIinfo.get({ingredient:item.id,amount:amount,unit:unit},function(data){
 //     //
 //     //   delete data.$promise;
 //     //   delete data.$resolved;
@@ -233,7 +346,7 @@ function($firebaseAuth) {
 // }
 // );
 
-// dinnerPlannerApp.factory("UserItemsAdd",
+// carbonListApp.factory("UserItemsAdd",
 // function($firebaseObject) {
 //
 //   return function(username, item) {
@@ -244,7 +357,7 @@ function($firebaseAuth) {
 //     // OM NÅGON UNDEFINED, ANVÄND AMOUNT ELLER UNIT FRÅN ITEM, DVS SPECIALITEM SOM DU TAR IN.
 //     // DET ÄR JU DET AMOUNT/UNIT SOM SATT INNAN.
 //     // //
-//     // Dinner.Dish.get({ingredient:item.id,amount:amount,unit:unit},function(data){
+//     // Carbon.APIinfo.get({ingredient:item.id,amount:amount,unit:unit},function(data){
 //     //
 //     //   delete data.$promise;
 //     //   delete data.$resolved;
@@ -264,19 +377,19 @@ function($firebaseAuth) {
 // }
 // );
 
-// dinnerPlannerApp.factory("UserItemsAdd",
-// function($firebaseObject, Dinner) {
+// carbonListApp.factory("UserItemsAdd",
+// function($firebaseObject, Carbon) {
 //
 //   return function(username, item) {
 //
 //     var statusText = document.getElementById('statusText');
 //
-//     Dinner.Dish.get({ingredient:item,amount:1000,unit:"g"},function(data){
+//     Carbon.APIinfo.get({ingredient:item,amount:1000,unit:"g"},function(data){
 //
 //       delete data.$promise;
 //       delete data.$resolved;
 //
-//       var statusCheck = Dinner.updateList(data);
+//       var statusCheck = Carbon.updateList(data);
 //
 //       // create a reference to the database node where we will store our data
 //       var ref = firebase.database().ref("users");
@@ -308,7 +421,7 @@ function($firebaseAuth) {
 //     // OM NÅGON UNDEFINED, ANVÄND AMOUNT ELLER UNIT FRÅN ITEM, DVS SPECIALITEM SOM DU TAR IN.
 //     // DET ÄR JU DET AMOUNT/UNIT SOM SATT INNAN.
 //     //
-//     // Dinner.Dish.get({ingredient:item.id,amount:amount,unit:unit},function(data){
+//     // Carbon.APIinfo.get({ingredient:item.id,amount:amount,unit:unit},function(data){
 //     //
 //     //   delete data.$promise;
 //     //   delete data.$resolved;
@@ -334,7 +447,7 @@ function($firebaseAuth) {
 
 
 // FUNKADE FINT
-// dinnerPlannerApp.factory("Download", ["$firebaseArray",
+// carbonListApp.factory("Download", ["$firebaseArray",
 // function($firebaseArray) {
 //   return function(username) {
 //     // create a reference to the database node where we will store our data
@@ -396,7 +509,7 @@ function($firebaseAuth) {
 // THREE WAY DATA BINDING, FUNGERANDE FACTORY!!
 // THREE WAY DATA BINDING, FUNGERANDE FACTORY!!
 // THREE WAY DATA BINDING, FUNGERANDE FACTORY!!
-// dinnerPlannerApp.factory("Profile", ["$firebaseObject",
+// carbonListApp.factory("Profile", ["$firebaseObject",
 //   function($firebaseObject) {
 //     return function(username, item) {
 //       // create a reference to the database node where we will store our data

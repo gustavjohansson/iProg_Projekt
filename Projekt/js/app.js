@@ -1,18 +1,18 @@
-var dinnerPlannerApp = angular.module('dinnerPlanner', ['ngRoute','ngAnimate', 'ngResource', 'ngCookies', 'ngMaterial', 'firebase']);
+var carbonListApp = angular.module('carbonListApp', ['ngRoute','ngAnimate', 'ngResource', 'ngCookies', 'ngMaterial', 'firebase']);
 
-dinnerPlannerApp.config(['$routeProvider',
+carbonListApp.config(['$routeProvider',
   function($routeProvider) {
-    console.log("Hejsan appen!")
+
     $routeProvider.
 
     when('/login', {
-      templateUrl: 'partials/login.html'
-      // controller: 'SearchCtrl'
+      templateUrl: 'partials/login.html',
+      controller: 'FirebaseCtrl'
     }).
 
     when('/register', {
-      templateUrl: 'partials/register.html'
-      // controller: 'SearchCtrl'
+      templateUrl: 'partials/register.html',
+      controller: 'FirebaseCtrl'
     }).
 
       when('/search', {
@@ -21,8 +21,8 @@ dinnerPlannerApp.config(['$routeProvider',
       }).
 
       when('/menu', {
-        templateUrl: 'partials/menu.html'
-        // controller: 'SearchCtrl'
+        templateUrl: 'partials/menu.html',
+        controller: 'FirebaseCtrl'
       }).
 
       when('/stats', {
@@ -41,7 +41,6 @@ dinnerPlannerApp.config(['$routeProvider',
         controller: 'SpecificCtrl'
       }).
 
-      // TODO in Lab 5: add more conditions for the last two screens (overview and preparation)
       otherwise({
         redirectTo: '/login'
       });

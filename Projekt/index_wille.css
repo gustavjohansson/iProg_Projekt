@@ -63,7 +63,7 @@ div.searchBox_static {
   /*padding-bottom: 80px;*/
   /*background-color: #C1E094;*/
   background-color: darkgreen;
-  height:60px;
+  height:70px;
   width: 100%;
   z-index: 70;
   /*top: 40px;*/
@@ -91,6 +91,7 @@ div.footer{
     right:0px;
     text-align:center;
     z-index:100;
+    padding-top:7px;
     /*margin-bottom:0px;*/
     /*border-top-style: solid;
     border-color: darkgreen;
@@ -119,6 +120,7 @@ div.listItems_dynamic {
 div.item {
   display: block;
   margin-bottom: 5px;
+  box-shadow: 3px 3px 4px grey;
 }
 
 .foundItemWell{
@@ -275,8 +277,140 @@ white-space:nowrap;
 
 .generalFooterButton {
 color: darkgreen;
-margin-top: 5px;
+/*margin-top: 5px;*/
+font-size: 18px;
 }
+
+.generalAlterMSG {
+display: block;
+text-align:center;
+font-family: 'Montserrat', sans-serif;
+color: white;
+width: 100%;
+/*background-color: red;*/
+
+}
+
+
+
+
+/*Footer*/
+.footerModalButton {
+display: inline-block;
+font-size: 18px;
+margin-top: 3px;
+margin-right: 5px;
+}
+
+.footerLabel {
+color:white;
+display: inline-block;
+}
+
+
+
+
+
+
+
+
+
+/*Specific.html*/
+.specificStarButton {
+color:gold;
+font-size: 25px;
+display:inline-block;
+margin-right:10px;
+}
+
+.specificItemInfo {
+margin-top:85px;
+text-align: center;
+}
+
+.specificCanvasContainer {
+margin-top: 5%;
+text-align:center;
+}
+
+.specificCanvasInfo {
+margin-top:10px;
+margin-bottom: 15px;
+text-align: center;
+font-size: 12px;
+}
+
+.specificEditAmountContainer {
+background-color:#9BD270;
+text-align: center;
+margin-top:10px;
+padding-bottom:5px;
+}
+
+.specificEditAmountHeadline {
+font-size: 23px;
+padding-top:20px;
+
+}
+
+.specificAmountContainer {
+display:inline-block;
+margin-right: 25px;
+}
+.specificAmountLabel {
+display:block;
+color:black;
+}
+
+.specificChangeButton {
+margin-top: 10px;
+margin-bottom: 10px;
+font-size:14px;
+width:100px;
+}
+
+.specificChangeAlert {
+font-family: 'Montserrat', sans-serif;
+font-size: 12px;"
+}
+
+.specificDidUKnowContainer {
+background-color: white;
+text-align: center;
+margin-top:30px;
+}
+
+.specificDidUKnowText {
+padding-top:5px;
+padding-bottom: 60px;
+text-align:center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*Search.html and Favourite.html*/
 .searchClearButton {
@@ -285,6 +419,7 @@ right:0;
 margin-right: 20px;
 margin-top: 5px;
 color: red;
+font-size: 14px;
 }
 
 .searchLabelContainer {
@@ -304,6 +439,41 @@ position:absolute;
 right:0;
 margin-right: 12%;
 }
+
+.searchCheckButton {
+display: inline-block;
+font-size: 20px;
+margin-left: -18px;
+margin-top: 8px;
+color: green;
+}
+
+.searchRemoveButton {
+position: absolute;
+display: inline-block;
+font-size: 20px;
+right: 0;
+margin-right: 10px;
+margin-top: 17px;
+color: red;
+}
+
+.searchItemNameAmount {
+display: inline-block;
+margin-top: 2px;
+white-space:nowrap;
+}
+
+.searchItemCarbon {
+display: inline-block;
+margin-top: 8px;
+position:absolute;
+right:7%;
+text-align: right;
+white-space:nowrap;
+}
+
+
 
 
 /*SearchBox.html*/
@@ -346,7 +516,7 @@ padding-bottom: 20px;
 
 .searchBoxAlterWindow {
 display: block;
-background-color: darkblue;
+background-color: grey;
 color: white;
 /*position: fixed;*/
 /*z-index: 100;*/
@@ -442,7 +612,6 @@ font-size: 20px;
 display: inline-block;
 position:absolute;
 left:3%;
-color: darkgreen;
 font-size: 18px;
 margin-top: 3%;
 }

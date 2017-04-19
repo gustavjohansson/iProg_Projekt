@@ -1,7 +1,7 @@
-dinnerPlannerApp.controller('FirebaseCtrl', function ($scope, $http, $routeParams, $firebaseObject, $firebaseAuth, Dinner, Auth) {
+carbonListApp.controller('FirebaseCtrl', function ($scope, $http, $routeParams, $firebaseObject, $firebaseAuth, Carbon, FirebaseAccount) {
 
 // $controller("SearchCtrl", {$scope: $scope});
-$scope.auth = Auth;
+$scope.auth = FirebaseAccount.Auth();
 
 
   $scope.signOut = function () {
@@ -51,7 +51,7 @@ $scope.signInWithFacebook = function () {
   $scope.createUser = function(email, password, passwordCheck) {
        $scope.message = null;
        $scope.error = null;
-      //  $scope.swedishError = null;
+      //  $scope.sweAPIinfoError = null;
 
        // Create a new user
        if (password !== passwordCheck) {
@@ -66,7 +66,7 @@ $scope.signInWithFacebook = function () {
          }).catch(function(error) {
 
            $scope.error = error;
-          //  $scope.swedishError = "Oj, något gick fel! Kontrollera dina uppgifter.";
+          //  $scope.sweAPIinfoError = "Oj, något gick fel! Kontrollera dina uppgifter.";
          });
        }
      };
@@ -74,7 +74,7 @@ $scope.signInWithFacebook = function () {
      $scope.signInWithEmail = function(email, password) {
           $scope.message = null;
           $scope.error = null;
-          // $scope.swedishError = null;
+          // $scope.sweAPIinfoError = null;
 
           // Create a new user
           $scope.auth.$signInWithEmailAndPassword(email, password)
@@ -84,7 +84,7 @@ $scope.signInWithFacebook = function () {
             }).catch(function(error) {
 
               $scope.error = error;
-              // $scope.swedishError = "Oj, något gick fel! Kontrollera dina uppgifter.";
+              // $scope.sweAPIinfoError = "Oj, något gick fel! Kontrollera dina uppgifter.";
             });
         };
 
@@ -92,11 +92,13 @@ $scope.signInWithFacebook = function () {
      // any time auth state changes, add the user data to scope
      $scope.auth.$onAuthStateChanged(function(firebaseUser) {
       //  Preventing the Firebase bug, that onAuthState runs twice.
-       var referenceUserID = Dinner.getFirebaseUserUID();
+      console.log("firebaseUser")
+      console.log(firebaseUser)
+       var referenceUserID = Carbon.getFirebaseUserUID();
        if (firebaseUser == null || referenceUserID != firebaseUser.uid) {
           $scope.firebaseUser = firebaseUser;
-          Dinner.setFirebaseUser(firebaseUser);
-          Dinner.init();
+          Carbon.setFirebaseUser(firebaseUser);
+          Carbon.init();
           if(firebaseUser) {
             // window.location = '#!/login'; //After successful login, user will be redirected to home.html
             window.location = '#!/search';

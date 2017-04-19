@@ -1,10 +1,10 @@
 
-dinnerPlannerApp.controller('SpecificCtrl', function ($scope, $http, $timeout, $routeParams, $firebaseObject, $firebaseAuth, Dinner, UserItemAdd, UserItemModify, Auth, Download) {
+carbonListApp.controller('SpecificCtrl', function ($scope, $http, $timeout, $routeParams, $firebaseObject, $firebaseAuth, Carbon) {
 
-  Dinner.setCurrentItem($routeParams.itemId);
+  Carbon.setCurrentItem($routeParams.itemId);
 
 $scope.itemAlreadyInFav = function(item){
-  return Dinner.itemAlreadyInFav(item);
+  return Carbon.itemAlreadyInFav(item);
 }
 
 
@@ -12,7 +12,7 @@ $scope.addOrRemoveItemFromFav = function(item){
   $scope.removed = "";
   $scope.added = "";
 
-  var alreadyInFavList = Dinner.addOrRemoveItemFromFav(item);
+  var alreadyInFavList = Carbon.addOrRemoveItemFromFav(item);
 
   if (alreadyInFavList) {
     $scope.removed = item.name + " togs bort som favorit!";
@@ -28,17 +28,17 @@ $scope.addOrRemoveItemFromFav = function(item){
   }
 }
 
-  $scope.uid = Dinner.getFirebaseUserUID();
-  $scope.specificItem = Dinner.getCurrentItem();
-  $scope.completeList = Dinner.getCompleteList();
-  $scope.checkList = Dinner.getCheckList();
+  $scope.uid = Carbon.getFirebaseUserUID();
+  $scope.specificItem = Carbon.getCurrentItem();
+  $scope.completeList = Carbon.getCompleteList();
+  $scope.checkList = Carbon.getCheckList();
 
   $scope.totCarbon = function(){
-    return Dinner.getTotalCarbon($scope.specificItem.id);
+    return Carbon.getTotalCarbon($scope.specificItem.id);
   }
 
   $scope.percentCarbon = function(){
-    return Dinner.getPercentCarbon($scope.specificItem);
+    return Carbon.getPercentCarbon($scope.specificItem);
   }
 
 
@@ -49,63 +49,35 @@ $scope.addOrRemoveItemFromFav = function(item){
       $scope.errorChange = "Ingen ändring gjordes! Du måste fylla i både mängd och enhet för att ändra.";
     }
     else {
-    var itemChanged = Dinner.updateItemForUser(amount, unit, $scope.specificItem)
+    var itemChanged = Carbon.updateItemForUser(amount, unit, $scope.specificItem)
     itemChanged.then(function() {
       $scope.succesfulChange = "Uppdateringen genomförd!";
-        $scope.specificItem = Dinner.getCurrentItem();
-        $scope.mittnamn();
+        $scope.specificItem = Carbon.getCurrentItem();
+        $scope.doughnutChart();
     }, function(reason) {
       $scope.errorChange = "Ingen ändring gjordes! Du måste fylla i både mängd och enhet för att ändra.";
     })
   }
   }
 
-$scope.mittnamn = function() {
+$scope.doughnutChart = function() {
+  var ctx = angular.element(document).find("#myChart");
+  Carbon.createChart(ctx, "doughnut", false, "specific");
 
-  var curItem_name = ($scope.specificItem).name;
-  var curItem_carbon = ($scope.specificItem).carbon.average;
-
-    var data = {
-        labels: [
-          curItem_name,
-          "Resterande varor"
-        ],
-        datasets: [
-            {
-                data: [curItem_carbon, Dinner.getTotalCarbon($scope.specificItem.id)],
-                backgroundColor: [
-                    "#9BD270",
-                    "#006400"
-                ],
-                hoverBackgroundColor: [
-                    "#9BD270",
-                    "#006400"
-                ]
-            }],
-    };
-
-    var options = {
-      responsive: true,
-      cutoutPercentage: 60,
-      legend: {
-        position: "bottom"
-
-      },
-
-    };
-
-    var ctx = angular.element(document).find("#myChart");
-
-    var myDoughnutChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: data,
-        options: options
-    });
+  // Carbon.createChart(ctx, type, userData, specialType);
+  // var data = Carbon.getDoughnutChartData("specific");
+  // var options = Carbon.getChartOptions();
+  //
+  //   var myDoughnutChart = new Chart(ctx, {
+  //       type: 'doughnut',
+  //       data: data,
+  //       options: options
+  //   });
 }
 
 $timeout(function() {
-  $scope.mittnamn();
-}, 800);
+  $scope.doughnutChart();
+}, 1000);
 
 
 });

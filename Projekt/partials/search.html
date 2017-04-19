@@ -1,36 +1,29 @@
-
 <ng-include src="'partials/searchBox.html'" ng-controller="SearchCtrl"></ng-include>
-
-
-
 
 <div class="listItems_dynamic">
 
   <div class="col-xs-12" style="padding-bottom: 20px;">
-    <!-- TAR DU BORT BOOTSTRAPPEN PÅ XS 12 OVANFÖR HÄNDER DET GREJER; OM VI BEHÖVER PLATS! -->
     <h4 style="display: inline-block;"><b>Checklista</b></h4>
-    <button class="searchClearButton btn btn-default btn-xs" ng-model="checkList" ng-click="emptyChecklist()"><b style="font-size: 14px;">Rensa</b></button>
-    <!-- <label style="margin-left: 35px;">Namn</label>
-    <label style="margin-left: 35%;">CO2-avtryck</label> -->
+    <!-- <button class="searchClearButton btn btn-default btn-xs" style="background-color: white; color:red" ng-model="checkList" ng-click="emptyChecklist()"><b>Rensa</b></button> -->
     <hr class="gradientLine">
     <div ng-show="checkList.length">
       <div class="searchLabelContainer">
         <div class="searchLabelLeft"><b>Vara</b></div><div class="searchLabelRight"><b>CO2-avtryck</b></div>
       </div>
+
       <div ng-repeat="item in checkList | orderBy:['!-carbon.average', '-carbon.average']">
-        <div class='col-xs-12 item well well-sm' ng-class="{'notFound_noCarbon':item.carbon.average=='???'}" ng-model="item" style="box-shadow: 3px 3px 4px grey;">
-          <div class="col-xs-1 glyphicon glyphicon-unchecked" style="display: inline-block; font-size: 20px; margin-left: -18px; margin-top: 8px; color: green;" ng-click="checkItem(item)"></div>
+        <div class='col-xs-12 item well well-sm' ng-class="{'notFound_noCarbon':item.carbon.average=='???'}" ng-model="item">
 
+          <div class="searchCheckButton col-xs-1 glyphicon glyphicon-unchecked" ng-click="checkItem(item)"></div>
           <a href="#!/specific/{{item.id}}" style="color: inherit;">
-            <div class='col-xs-4' style='display: inline-block; margin-top: 2px; white-space:nowrap;'>{{item.fixedName}}<br><i>{{item.amount}} {{item.unit}}</i></div>
-            <div class='col-xs-5' style='display: inline-block; margin-top: 8px; position:absolute; right:15px; text-align: right; white-space:nowrap;'><span ng-if="item.carbon.average=='???'">???</span><span ng-if="item.carbon.average!='???'">{{(item.carbon.average*getCO2representation()).toFixed(1)}} {{getCO2unit()}}</span></div>
+            <div class='searchItemNameAmount col-xs-4' >{{item.fixedName}}<br><i>{{item.amount}} {{item.unit}}</i></div>
+            <div class='searchItemCarbon col-xs-5'><span ng-if="item.carbon.average=='???'">???</span><span ng-if="item.carbon.average!='???'">{{(item.carbon.average*getCO2representation()).toFixed(1)}} {{getCO2unit()}}</span></div>
           </a>
-
-          <div class="col-xs-1 glyphicon glyphicon-remove" style="position: absolute; display: inline-block;  font-size: 20px; right: 0; margin-right: 10px; margin-top: 17px; color: red;" ng-click="removeItemFromCheckList(item)"></div>
-
+          <div class="searchRemoveButton col-xs-1 glyphicon glyphicon-remove" ng-click="removeItemFromCheckList(item)"></div>
 
         </div>
       </div>
+
     </div>
     <div ng-show="!checkList.length">
       Använd sökfunktionen för att lägga till varor i denna lista.
@@ -41,25 +34,26 @@
     <div class="header" style="display:inline-block;">
       <h4 style="display: inline-block;"><b>Hittade varor</b></h4><p class="glyphicon glyphicon-menu-down" style="margin-left: 5px;"></p>
     </div>
-    <button class="btn btn-default btn-xs" style="position: absolute; right:0; margin-right: 20px; margin-top: 5px; color: red;" ng-model="checkList" ng-click="emptyCompletelist()"><b style="font-size: 14px;">Rensa</b></button>
+    <button class="searchClearButton btn btn-default btn-xs"  style="background-color: white; color:red" ng-model="completeList" ng-click="emptyCompletelist()"><b>Rensa</b></button>
 
     <hr class="gradientLine">
     <div class="content">
       <div ng-show="completeList.length">
-        <div style="display:block; margin-top:20px; margin-bottom:5px;">
-          <div style="display:inline-block;margin-left:10%;"><b>Vara</b></div><div style="display:inline-block; position:absolute; right:0; margin-right: 12%;"><b>CO2-avtryck</b></div>
+        <div class="searchLabelContainer">
+          <div class="searchLabelLeft"><b>Vara</b></div><div class="searchLabelRight"><b>CO2-avtryck</b></div>
         </div>
-        <div ng-repeat="item in completeList | orderBy:['!-carbon.average', '-carbon.average']">
-          <div class='col-xs-12 item well well-sm foundItemWell' ng-class="{'found_noCarbon':item.carbon.average=='???'}" ng-model="item" style="box-shadow: 3px 3px 4px grey;">
 
-            <div class="col-xs-1 glyphicon glyphicon-check" style="display: inline-block; font-size: 20px; margin-left: -18px; margin-top: 8px; color: green;" ng-click="uncheckItem(item)"></div>
+        <div ng-repeat="item in completeList | orderBy:['!-carbon.average', '-carbon.average']">
+          <div class='col-xs-12 item well well-sm foundItemWell' ng-class="{'found_noCarbon':item.carbon.average=='???'}" ng-model="item">
+
+            <div class="searchCheckButton col-xs-1 glyphicon glyphicon-check" ng-click="uncheckItem(item)"></div>
 
             <a href="#!/specific/{{item.id}}" style="color: inherit;" ng-click="setItemInfo()">
-              <div class='col-xs-4' style='display: inline-block; margin-top: 2px; white-space:nowrap;'><strike>{{item.fixedName}}</strike><br><i>{{item.amount}} {{item.unit}}</i></div>
-              <div class='col-xs-5' style='display: inline-block; margin-top: 8px; position:absolute; right:15px; text-align: right; white-space:nowrap;'><span ng-if="item.carbon.average=='???'">???</span><span ng-if="item.carbon.average!='???'">{{(item.carbon.average*getCO2representation()).toFixed(1)}} {{getCO2unit()}}</span></div>
+              <div class='searchItemNameAmount col-xs-4'><strike>{{item.fixedName}}</strike><br><i>{{item.amount}} {{item.unit}}</i></div>
+              <div class='searchItemCarbon col-xs-5'><span ng-if="item.carbon.average=='???'">???</span><span ng-if="item.carbon.average!='???'">{{(item.carbon.average*getCO2representation()).toFixed(1)}} {{getCO2unit()}}</span></div>
             </a>
 
-            <div class="col-xs-1 glyphicon glyphicon-remove" style="position: absolute; display: inline-block;  font-size: 20px; right: 0; margin-right: 10px; margin-top: 17px; color: red;" ng-click="removeItemFromCompleteList(item)"></div>
+            <div class="searchRemoveButton col-xs-1 glyphicon glyphicon-remove" ng-click="removeItemFromCompleteList(item)"></div>
 
           </div>
         </div>
@@ -73,14 +67,11 @@
 
 </div>
 
-<div class="footer" style="padding-top:7px;">
+<div class="footer">
 
-  <button id="myBtn" class="btn btn-xs glyphicon glyphicon-question-sign" style="background-color: white;display: inline-block; font-size: 18px; color: darkgreen; margin-top: 3px; margin-right: 5px;">
-  </button>
-
-  <b style="color:white; display: inline-block;">CO2-avtryck i </b>
+  <b class="footerLabel">CO2-avtryck i </b>
   <div ng-controller="SearchCtrl" style="display: inline-block;">
-    <select class="form-control input-sm" style="font-family: 'Montserrat', sans-serif; font-size: 14px;" ng-init="CO2value='co2'" ng-model="CO2value" ng-change="setCO2representation(CO2value)">
+    <select class="searchBoxInputs form-control input-sm" ng-init="CO2value='co2'" ng-model="CO2value" ng-change="setCO2representation(CO2value)">
       <option value="" disabled selected>{{getCurrentCO2representation()}}</option>
       <option disabled>-----------------</option>
 
@@ -99,21 +90,7 @@
 
 
 
-<!-- The Modal -->
-<div id="myModal" class="modal">
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h3>Enhets-omvandlaren</h3>
-    </div>
-    <div class="modal-body">
-      <p>Siffran till höger om varje vara representerar varans koldioxidavtryck.</p>
-      <p>Enhets-omvandlaren låter dig konvertera matvarors koldioxidavtryck till andra enheter som motsvarar exakt samma avtryck!</p>
-      <p><i>Koldioxidavtrycken är hämtade från databasen lcafdb.org.</i></p>
-    </div>
-  </div>
-</div>
+
 
 
 <script>
@@ -121,41 +98,9 @@
 $(".header").click(function () {
   $("p", this).toggleClass("glyphicon glyphicon-menu-right glyphicon glyphicon-menu-down");
   $header = $(this);
-  //getting the next element
-  // $content = $header.next();
   $content = $(".content")
   //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
   $content.slideToggle(500);
 });
 
-// Get the modal
-var modal = document.getElementById('myModal');
-
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-modal.onclick = function() {
-  modal.style.display = "none";
-}
-
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
 </script>

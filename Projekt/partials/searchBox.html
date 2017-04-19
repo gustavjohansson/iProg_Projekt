@@ -1,7 +1,6 @@
-
 <div ng-controller="SearchCtrl" class="searchBox_static">
 
-  <a href="#!/menu" class="statsMenuButton btn btn-default glyphicon glyphicon-menu-hamburger"></a>
+  <a href="#!/menu" class="statsMenuButton btn btn-default glyphicon glyphicon-menu-hamburger" style="background-color:white;color:darkgreen"></a>
 
   <div class="searchBoxSearchField">
 
@@ -23,7 +22,7 @@
         <span md-highlight-text="searchText">{{item.name}}</span>
       </md-item-template>
     </md-autocomplete>
-    <button class="searchBoxAddButton btn btn-default btn-md glyphicon glyphicon-plus" ng-click="search(searchForm.textField.$viewValue, amountH, unitH)"></button>
+    <button class="searchBoxAddButton btn btn-default btn-md glyphicon glyphicon-plus" style="background-color:white;color:darkgreen;" ng-click="search(searchForm.textField.$viewValue, amountH, unitH)"></button>
   </form>
 </div>
 
@@ -75,26 +74,13 @@
 
 
 $(".testHead").click(function () {
-  console.log(" xDDDDDDDDDDDDDDDDD")
   $("p", this).toggleClass("glyphicon glyphicon-menu-up glyphicon glyphicon-menu-down");
-  // $header = $(this);
-  //getting the next element
-  // $content = $header.next();
   $content = $(".testCont")
   //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
   $content.slideToggle(500);
 });
 
 
-
-
-
-
-
-var statusText = document.getElementById('statusText');
-statusText.onclick = function() {
-    statusText.style.display = "none";
-}
 
 
 </script>

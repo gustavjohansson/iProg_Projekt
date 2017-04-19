@@ -1,5 +1,5 @@
 
-dinnerPlannerApp.controller('SearchCtrl', function ($scope, $location, $http, $routeParams, Dinner, UserItemAdd, Download, UserItemModify) {
+carbonListApp.controller('SearchCtrl', function ($scope, $location, $http, $routeParams, Carbon) {
 
 
   // $controller("FirebaseCtrl", {$scope: $scope});
@@ -8,61 +8,61 @@ dinnerPlannerApp.controller('SearchCtrl', function ($scope, $location, $http, $r
   // -------------SETTERS-------------
 
   $scope.removeItemFromCheckList = function(item){
-    Dinner.removeItemFromList(item);
+    Carbon.removeItemFromList(item);
   }
 
 
   $scope.emptyChecklist = function(){
-    Dinner.emptyChecklist();
-    $scope.checkList = Dinner.getCheckList();
+    Carbon.emptyChecklist();
+    $scope.checkList = Carbon.getCheckList();
   }
 
   $scope.emptyCompletelist = function(){
-    Dinner.emptyCompletelist();
-    $scope.completeList = Dinner.getCompleteList();
+    Carbon.emptyCompletelist();
+    $scope.completeList = Carbon.getCompleteList();
   }
 
 
   $scope.removeItemFromCompleteList = function(item){
-    Dinner.removeItemFromCompleteList(item);
+    Carbon.removeItemFromCompleteList(item);
   }
 
   $scope.checkItem = function(item){
-    Dinner.foundItem(item);
+    Carbon.foundItem(item);
   }
 
   $scope.uncheckItem = function(item){
-    Dinner.undoItem(item);
+    Carbon.undoItem(item);
   }
 
   $scope.setCO2representation = function(CO2value){
-    Dinner.setCO2constant(CO2value);
+    Carbon.setCO2constant(CO2value);
   }
 
 
   // -------------GETTERS-------------
   // -------------GETTERS-------------
 
-  $scope.checkList =Dinner.getCheckList();
+  $scope.checkList =Carbon.getCheckList();
 
-  $scope.completeList =Dinner.getCompleteList();
+  $scope.completeList =Carbon.getCompleteList();
 
-  // $scope.specificItem = Dinner.setCurrentItem($routeParams.itemId);
+  // $scope.specificItem = Carbon.setCurrentItem($routeParams.itemId);
 
   $scope.getCO2representation = function(){
-    return Dinner.getCO2constant();
+    return Carbon.getCO2constant();
   }
 
   $scope.getCurrentCO2representation = function(){
-    return Dinner.getCurrentCO2representation();
+    return Carbon.getCurrentCO2representation();
   }
 
   $scope.getCO2unit = function(){
-    return Dinner.getCO2unit();
+    return Carbon.getCO2unit();
   }
 
   $scope.getNormCO2 = function(){
-    return Dinner.getTotalCO2();
+    return Carbon.getTotalCO2();
   }
 
 
@@ -90,7 +90,7 @@ $scope.search = function(searchword, amount, unit) {
   $scope.amountH = "";
   $scope.unitH = "";
 
-  var correctSearch = Dinner.checkIfCorrectSearch(searchword);
+  var correctSearch = Carbon.checkIfCorrectSearch(searchword);
 
   if (!correctSearch) {
     $scope.status = 'Ogiltig sökning. Din vara kan endast bestå av bokstäver.';
@@ -99,7 +99,7 @@ $scope.search = function(searchword, amount, unit) {
   else {
     $scope.status = 'Söker efter "' + searchword + '"...';
 
-    var statusPromise = Dinner.executeSearch(searchword, amount, unit, $location.url());
+    var statusPromise = Carbon.executeSearch(searchword, amount, unit, $location.url());
 
     statusPromise.then(function() {
       statusMsg = statusPromise.$$state.value;
@@ -138,7 +138,7 @@ $scope.search = function(searchword, amount, unit) {
 //   for (item in userData) {
 //     if (typeof userData[item].itemInfo != "undefined") {
 //       if ((userData[item].itemInfo).id == ingredient && !ownAmountAndUnitChosen) {
-//         var statusCheck = Dinner.updateList(userData[item].itemInfo);
+//         var statusCheck = Carbon.updateList(userData[item].itemInfo);
 //         inFirebaseUpdatelist = true;
 //
 //         if (statusCheck) {
@@ -155,15 +155,15 @@ $scope.search = function(searchword, amount, unit) {
 //   }
 //
 //   if (!inFirebaseUpdatelist) {
-//     Dinner.Dish.get({ingredient:ingredient,amount:amount,unit:unit},function(data){
-//       var statusCheck = Dinner.updateList(data);
+//     Carbon.APIinfo.get({ingredient:ingredient,amount:amount,unit:unit},function(data){
+//       var statusCheck = Carbon.updateList(data);
 //
 //       if (statusCheck) {
 //         statusText.style.background = "#5cbc3a";
 //         $scope.status = '"' + data.name + '" lades till i listan!'
 //         $("#statusText").delay(2000).fadeOut("fast");
 //         if (ownAmountAndUnitChosen) {
-//           UserItemModify(Dinner.getFirebaseUserUID(), Dinner.cutNameOfItem(data));
+//           UserItemModify(Carbon.getFirebaseUserUID(), Carbon.cutNameOfItem(data));
 //         }
 //       }
 //       else {

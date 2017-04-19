@@ -1,5 +1,5 @@
 
-dinnerPlannerApp.controller('FavouriteCtrl', function ($scope, $http, $routeParams, Dinner, UserItemAdd, Download, UserItemModify) {
+carbonListApp.controller('FavouriteCtrl', function ($scope, $http, $routeParams, Carbon) {
 
 
 // $controller("FirebaseCtrl", {$scope: $scope});
@@ -8,44 +8,44 @@ dinnerPlannerApp.controller('FavouriteCtrl', function ($scope, $http, $routePara
   // -------------GETTERS-------------
   // -------------GETTERS-------------
 
-  $scope.checkList =Dinner.getCheckList();
+  $scope.checkList =Carbon.getCheckList();
 
-  $scope.completeList =Dinner.getCompleteList();
+  $scope.completeList =Carbon.getCompleteList();
 
-  $scope.favList =Dinner.getFavouriteList();
+  $scope.favList =Carbon.getFavouriteList();
 
 
   $scope.getCO2representation = function(){
-    return Dinner.getCO2constant();
+    return Carbon.getCO2constant();
   }
 
   $scope.getCO2unit = function(){
-    return Dinner.getCO2unit();
+    return Carbon.getCO2unit();
   }
 
   $scope.getCurrentCO2representation = function(){
-    return Dinner.getCurrentCO2representation();
+    return Carbon.getCurrentCO2representation();
   }
 
 
   $scope.removeItemFromFavouriteList = function(item){
-    Dinner.removeItemFromFavouriteList(item);
+    Carbon.removeItemFromFavouriteList(item);
   }
 
   $scope.addFavItemToCheck = function(item){
     $scope.favAddedToCheck = "";
-    var favAddedToChecklist = Dinner.updateList(item);
+    var favAddedToChecklist = Carbon.updateList(item);
     if (favAddedToChecklist) {
       $scope.favAddedToCheck = item.name + " lades till i din inköpslista!";
     }
   }
 
   $scope.favItemAlreadyInList = function(item){
-    return Dinner.favItemAlreadyInList(item);
+    return Carbon.favItemAlreadyInList(item);
   }
 
   $scope.addAllFavs = function(){
-    Dinner.addAllFavsToChecklist();
+    Carbon.addAllFavsToChecklist();
   }
 
 
