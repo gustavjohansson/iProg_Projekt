@@ -1,0 +1,100 @@
+
+<div ng-controller="SearchCtrl" class="searchBox_static">
+
+  <a href="#!/menu" class="statsMenuButton btn btn-default glyphicon glyphicon-menu-hamburger"></a>
+
+  <div class="searchBoxSearchField">
+
+    <form name="searchForm" ng-model="form">
+      <md-autocomplete
+      md-input-name="textField"
+      md-selected-item="selectedItem"
+      md-search-text="searchText"
+      md-search-text-change="searchTextChange(searchText)"
+      md-items="item in autoSearch(searchText)"
+      md-min-length="2"
+      md-item-text="item.name"
+      placeholder="Ange vara"
+      md-dropdown-items="3"
+      md-dropdown-position="bottom"
+
+      class="searchBoxAutocomplete">
+      <md-item-template>
+        <span md-highlight-text="searchText">{{item.name}}</span>
+      </md-item-template>
+    </md-autocomplete>
+    <button class="searchBoxAddButton btn btn-default btn-md glyphicon glyphicon-plus" ng-click="search(searchForm.textField.$viewValue, amountH, unitH)"></button>
+  </form>
+</div>
+
+
+
+<div>
+<!-- btn btn-default btn-xs -->
+  <div class="testCont" style="background-color: darkgreen;">
+    <!-- <form> -->
+        <div style="padding-bottom:5px;">
+          <div style="display: inline-block;">
+            <!-- <label style="color:white;">Mängd:</label> -->
+            <input ng-model="amountH" class="searchBoxInputs form-control input-sm" value="1000" placeholder="Mängd" type="tel" size="6">
+          </div>
+          <div style="display: inline-block;">
+            <!-- <label style="color:white;">Enhet:</label> -->
+            <select ng-model="unitH" class="searchBoxInputs form-control input-sm">
+              <option value="" disabled selected>Enhet</option>
+              <option value="kilo">Kilogram</option>
+              <option value="gram" selected>Gram</option>
+              <option value="liter">Liter</option>
+              <option value="deciliter">Deciliter</option>
+              <option value="styck">Styck</option>
+            </select>
+          </div>
+        </div>
+      <!-- </form> -->
+  </div>
+
+  <div class="searchBoxMinimize testHead">
+    <p class="glyphicon glyphicon-menu-up" ></p>
+  </div>
+
+
+</div>
+
+  <div id="statusText" class="searchBoxAlterWindow">
+    {{status}}
+  </div>
+
+</div>
+
+
+<!-- <div  ng-controller="SearchCtrl" class="col-xs-12" style="background-color: orange; position: fixed; margin-top: -15px; z-index: 100;">
+  {{status}}
+</div> -->
+
+<script>
+
+
+$(".testHead").click(function () {
+  console.log(" xDDDDDDDDDDDDDDDDD")
+  $("p", this).toggleClass("glyphicon glyphicon-menu-up glyphicon glyphicon-menu-down");
+  // $header = $(this);
+  //getting the next element
+  // $content = $header.next();
+  $content = $(".testCont")
+  //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+  $content.slideToggle(500);
+});
+
+
+
+
+
+
+
+var statusText = document.getElementById('statusText');
+statusText.onclick = function() {
+    statusText.style.display = "none";
+}
+
+
+</script>

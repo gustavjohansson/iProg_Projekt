@@ -1,0 +1,41 @@
+<div>
+
+
+  <div class="searchBox_static">
+    <a href="#!/menu" class="statsMenuButton btn btn-default glyphicon glyphicon-menu-hamburger"></a>
+    <p class="generalHeadline"><b>Statistik</b></p>
+  </div>
+
+
+  <div class="statsChartLabelContainer" style="margin-top:60px;">
+    <label class="statsChartLabel">Nuvarande inköpslista</label>
+  </div>
+
+  <div class='col-xs-12 statsCanvas'>
+    <canvas id="statChart1" width="100" height="100"></canvas>
+  </div>
+
+
+  <div class="statsChartLabelContainer">
+    <label class="statsChartLabel">Historik</label>
+  </div>
+
+  <div class='col-xs-12 statsCanvas'>
+    <canvas id="statChart2" width="100" height="100"></canvas>
+  </div>
+
+
+  <div class="statsChartLabelContainer">
+    <label class="statsChartLabel">Dina högsta avtryck</label>
+  </div>
+
+  <div class='col-xs-12 statsCanvas' style="margin-bottom: 70px;">
+    <canvas id="statChart3" width="100" height="100"></canvas>
+  </div>
+
+
+
+  <div ng-controller="FirebaseCtrl" class="footer">
+    <!-- Ha nått här -->
+  </div>
+</div>

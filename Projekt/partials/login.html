@@ -1,0 +1,55 @@
+<div class="loginBackground">
+
+  <div ng-app="dinnerPlanner" ng-controller="FirebaseCtrl" class="loginWindow">
+    <h1 style="color:white;">CarbonList</h1>
+    <div class="loginContent">
+
+      <div class='loginSignInBox well well-sm'>
+        <form class="loginForm">
+          <div class="form-group has-feedback">
+            <input class="loginSignInInputs form-control input-sm" placeholder="E-mail" type="text" size="20" ng-model="userEmail">
+            <i class="form-control-feedback glyphicon glyphicon-user"></i>
+          </div>
+
+          <div class="form-group has-feedback">
+            <input class="loginSignInInputs form-control input-sm" placeholder="Lösenord" type="password" size="20" ng-model="userPassword">
+            <i class="form-control-feedback glyphicon glyphicon-lock"></i>
+          </div>
+
+          <button class="loginSignInButton btn btn-default btn-sm" style="background-color: darkgreen; color:white; width:220px;" ng-click="signInWithEmail(userEmail, userPassword)"><b>Logga in</b></button>
+        </form>
+
+        <a href="#!/register" style="color:darkgreen;"><b>Registrera</b></a>
+        <p style="color:red; margin-top: 5px;">{{error}}</p>
+      </div>
+
+      <div>
+        <button class="loginSignInButton btn btn-default btn-sm" style="background-color: #3B5998; color:white;" ng-click="signInWithFacebook()"><b>Logga in med Facebook</b></button>
+        <br>
+        <button class="loginSignInButton btn btn-default btn-sm" style="background-color: darkgreen; color:white;" ng-click="signIn()"><b>Logga in som gäst</b></button>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- Relik -->
+<!-- Relik -->
+<!-- <div ng-show="firebaseUser">
+<p>Hello, {{ firebaseUser.displayName }}</p>
+<button ng-click="signOut()">Logga ut</button>
+
+<a href="#!/welcome" class="btn btn-default btn-sm" style="color: darkgreen; margin-top: 5px;"><b style="font-size: 14px;">Fortsätt</b></a>
+</div> -->
