@@ -12,7 +12,7 @@
       </div>
 
       <div ng-repeat="item in favList | orderBy:['!-carbon.average', '-carbon.average']">
-        <div class='col-xs-12 item well well-sm' ng-class="{'notFound_noCarbon':item.carbon.average=='???', 'favItemInList':favItemAlreadyInList(item), 'favItemNotInList':!favItemAlreadyInList(item)}" ng-model="item" >
+        <div class='col-xs-12 well well-sm' ng-class="{'notFound_noCarbon':item.carbon.average=='???', 'favItemInList':favItemAlreadyInList(item), 'favItemNotInList':!favItemAlreadyInList(item)}" ng-model="item" >
           <div class="searchCheckButton col-xs-1 glyphicon glyphicon-shopping-cart" ng-click="addFavItemToCheck(item)"></div>
           <!-- <a href="#!/specific/{{item.id}}" style="color: inherit;"> -->
           <div class='searchItemNameAmount col-xs-4'>{{item.fixedName}}<br><i>{{item.amount}} {{item.unit}}</i></div>

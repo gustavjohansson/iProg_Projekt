@@ -39,6 +39,10 @@ carbonListApp.controller('SearchCtrl', function ($scope, $location, $http, $rout
     Carbon.setCO2constant(CO2value);
   }
 
+  $scope.favItemAlreadyInList = function(item){
+    return Carbon.favItemAlreadyInList(item);
+  }
+
 
   // -------------GETTERS-------------
   // -------------GETTERS-------------
@@ -46,6 +50,8 @@ carbonListApp.controller('SearchCtrl', function ($scope, $location, $http, $rout
   $scope.checkList =Carbon.getCheckList();
 
   $scope.completeList =Carbon.getCompleteList();
+
+    $scope.favList =Carbon.getFavouriteList();
 
   // $scope.specificItem = Carbon.setCurrentItem($routeParams.itemId);
 
@@ -66,6 +72,18 @@ carbonListApp.controller('SearchCtrl', function ($scope, $location, $http, $rout
   }
 
 
+  $scope.removeItemFromFavouriteList = function(item){
+    Carbon.removeItemFromFavouriteList(item);
+  }
+
+  $scope.addFavItemToCheck = function(item){
+    var favAddedToChecklist = Carbon.updateList(item);
+  }
+
+
+  $scope.addAllFavs = function(){
+    Carbon.addAllFavsToChecklist();
+  }
   // -------------API-------------
   // -------------API-------------
 
@@ -90,20 +108,25 @@ $scope.search = function(searchword, amount, unit) {
   $scope.amountH = "";
   $scope.unitH = "";
 
+  var statusText = document.getElementById('statusText');
+
   var correctSearch = Carbon.checkIfCorrectSearch(searchword);
 
   if (!correctSearch) {
     $scope.status = 'Ogiltig sökning. Din vara kan endast bestå av bokstäver.';
+    statusText.style.background = "#f14129";
   }
 
   else {
     $scope.status = 'Söker efter "' + searchword + '"...';
+    statusText.style.background = "#bcbcbc";
 
     var statusPromise = Carbon.executeSearch(searchword, amount, unit, $location.url());
 
     statusPromise.then(function() {
       statusMsg = statusPromise.$$state.value;
-      $scope.status = statusMsg;
+      statusText.style.background = statusMsg.color;
+      $scope.status = statusMsg.msg;
     })
 
   }
@@ -111,69 +134,3 @@ $scope.search = function(searchword, amount, unit) {
 
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// FUNGERAR SKITBRA, NÄR MAN HAR DE I KONTROLLERN, TA FAN INTE BORT ASSå,
-// KOLLA SPECIELLT HUR JA FICK UT STATUSMEDDELANDENA!
-
-
-// userData.$loaded().then(function() {
-//   var inFirebaseUpdatelist = false;
-//   for (item in userData) {
-//     if (typeof userData[item].itemInfo != "undefined") {
-//       if ((userData[item].itemInfo).id == ingredient && !ownAmountAndUnitChosen) {
-//         var statusCheck = Carbon.updateList(userData[item].itemInfo);
-//         inFirebaseUpdatelist = true;
-//
-//         if (statusCheck) {
-//           statusText.style.background = "#5cbc3a";
-//           $scope.status = '"' + userData[item].itemInfo.name + '" lades till i listan!'
-//           $("#statusText").delay(2000).fadeOut("fast");
-//         }
-//         else {
-//           statusText.style.background = "#f14129";
-//           $scope.status = '"' + userData[item].itemInfo.name + '" ligger redan i listan!'
-//         }
-//       }
-//     }
-//   }
-//
-//   if (!inFirebaseUpdatelist) {
-//     Carbon.APIinfo.get({ingredient:ingredient,amount:amount,unit:unit},function(data){
-//       var statusCheck = Carbon.updateList(data);
-//
-//       if (statusCheck) {
-//         statusText.style.background = "#5cbc3a";
-//         $scope.status = '"' + data.name + '" lades till i listan!'
-//         $("#statusText").delay(2000).fadeOut("fast");
-//         if (ownAmountAndUnitChosen) {
-//           UserItemModify(Carbon.getFirebaseUserUID(), Carbon.cutNameOfItem(data));
-//         }
-//       }
-//       else {
-//         statusText.style.background = "#f14129";
-//         $scope.status = '"' + data.name + '" ligger redan i listan!'
-//       }
-//
-//     }, function(data) {
-//       console.log("Du måste fylla i alla fält för att kunna lägga in en vara i listan!")
-//     })
-//
-//   }
-// })

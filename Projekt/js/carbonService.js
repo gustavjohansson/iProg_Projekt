@@ -106,20 +106,24 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
 
   this.emptyChecklist = function() {
     if (itemList.length != 0) {
-    itemList = [];
-    updateFirebase_clear("checklist");
-  }
+      itemList = [];
+      updateFirebase_clear("checklist");
+    }
   }
 
 
   this.emptyCompletelist = function() {
     var carbonInfo = this.totalCarbon_completeList();
     if (completeList.length != 0 && !isNaN(carbonInfo[1]) ) {
-    updateFirebase_archive(completeList, carbonInfo);
+      updateFirebase_archive(completeList, carbonInfo);
 
-    completeList = [];
-    updateFirebase_clear("completelist");
-  }
+      completeList = [];
+      updateFirebase_clear("completelist");
+    }
+    else {
+      completeList = [];
+      updateFirebase_clear("completelist");
+    }
   }
 
 
@@ -276,7 +280,7 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
     }
 
     if (type=="specific") {
-      var list_labels = [currentItem.name];
+      var list_labels = [currentItem.name, "Resterande varor"];
       var list_data = [currentItem.carbon.average, this.getTotalCarbon(currentItem.id)];
     }
 
@@ -287,7 +291,17 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
           data: list_data,
           backgroundColor: [
             "#9BD270",
-            "#006400"
+            "#006400",
+            "#CC0000",
+            "#CC6600",
+            "#CCCC00",
+            "#66CC00",
+            "#00CC00",
+            "#00CCCC",
+            "#0066CC",
+            "#6600CC",
+            "#CC00CC",
+            "#CC0066"
           ],
         }],
       };
@@ -338,10 +352,13 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
       var accumulatedList = [];
 
       for (list in userData) {
+        console.log(userData[list])
         if (userData[list].$id !== undefined) {
           // delete userData[list].$priority;
           for (item in userData[list].items) {
+            if ((userData[list].items)[item].carbon.average != "???") {
             tempList.push((userData[list].items)[item])
+          }
           }
         }
       }
@@ -410,12 +427,6 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
       });
     }
 
-
-
-
-
-    // DU KAN MERGA DESSA TVÅ TILL EN! GJ
-    // DU KAN MERGA DESSA TVÅ TILL EN! GJ
     this.getTotalCarbon = function(currItem, all) {
       var totalCarbon = 0;
 
@@ -470,8 +481,6 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
 
       return [totalCarbon, avgCarbon];
     }
-    // DU KAN MERGA DESSA TVÅ TILL EN! GJ
-    // DU KAN MERGA DESSA TVÅ TILL EN! GJ
 
 
     this.getCurrentCO2representation = function () {
@@ -638,11 +647,11 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
             inFirebaseUpdatelist = true;
 
             if (statusCheck) {
-              statusMsg = '"' + userData[item].itemInfo.name + '" lades till i listan!';
+              statusMsg = {"msg":'"' + userData[item].itemInfo.name + '" lades till i listan!', "color":"#5cbc3a"};
 
             }
             else {
-              statusMsg = '"' + userData[item].itemInfo.name + '" ligger redan i listan!';
+              statusMsg = {"msg":'"' + userData[item].itemInfo.name + '" ligger redan i listan!', "color":"#f14129"};
 
             }
 
@@ -680,14 +689,14 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
           var statusCheck = _this.addItemToFavouriteOrChecklist(missingToken, currentPage);
 
           if (statusCheck) {
-            statusMsg = '"' + missingToken.name + '" lades till i listan, men finns inte i databasen!';
+            statusMsg = {"msg":'"' + missingToken.name + '" lades till i listan, men finns inte i databasen!', "color":"#ff9c34"};
             if (ownAmountAndUnitChosen) {
               FirebaseAccount.ItemModify(user, _this.cutNameOfItem(missingToken));
             }
 
           }
           else {
-            statusMsg = '"' + missingToken.name + '" ligger redan i listan!';
+             statusMsg = {"msg":'"' + missingToken.name + '" ligger redan i listan!', "color":"#f14129"};
           }
 
           return statusMsg;
@@ -762,15 +771,14 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
 
 
             if (statusCheck) {
-              statusMsg = '"' + data.name + '" lades till i listan!';
-
+              statusMsg = {"msg":'"' + data.name + '" lades till i listan!', "color":"#5cbc3a"};
               if (ownAmountAndUnitChosen) {
                 FirebaseAccount.ItemModify(user, _this.cutNameOfItem(data));
               }
             }
 
             else {
-              statusMsg = '"' + data.name + '" ligger redan i listan!'
+              statusMsg = {"msg":'"' + data.name + '" ligger redan i listan!', "color":"#f14129"};
             }
 
             return statusMsg;
@@ -1006,159 +1014,3 @@ carbonListApp.factory('Carbon',function ($resource, $cookieStore, $cookies, $fir
 
 
   });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // ARKIV
-  // ARKIV
-  // ARKIV
-
-
-
-  // ORGINAL COOKIE FUNKTIONEN, TA INTE BORT!
-  // ORGINAL COOKIE FUNKTIONEN, TA INTE BORT!
-  // ORGINAL COOKIE FUNKTIONEN, TA INTE BORT!
-  // ORGINAL COOKIE FUNKTIONEN, TA INTE BORT!
-  // var updateCookie = function() {
-  //   // console.log(" *** Kommer in i updateCookie 1")
-  //   var itemList_cookies = [];
-  //   var completeList_cookies = [];
-  //   var currentItem_cookie;
-  //   var user_cookie;
-  //   // console.log("currentItem_cookie, user_cookie")
-  //   // console.log(currentItem_cookie)
-  //   // console.log(user_cookie)
-  //   // console.log("currentItem samt user och user.id")
-  //   // console.log(currentItem)
-  //   // console.log(user)
-  //   // console.log(user.id)
-  //
-  //   // console.log(" *** Kommer in i updateCookie 1")
-  //
-  //
-  //   currentItem_cookie = currentItem;
-  //   user_cookie = user;
-  //
-  //   for (var k = 0; k<itemList.length;k++) {
-  //     light_item = {};
-  //     light_item.name = itemList[k].name
-  //     light_item.amount = itemList[k].amount
-  //     light_item.unit = itemList[k].unit
-  //     light_item.id = itemList[k].id
-  //     itemList_cookies.push(light_item);
-  //   }
-  //
-  //
-  //   for (var k = 0; k<completeList.length;k++) {
-  //     light_item = {};
-  //     light_item.name = completeList[k].name
-  //     light_item.amount = completeList[k].amount
-  //     light_item.unit = completeList[k].unit
-  //     light_item.id = completeList[k].id
-  //     completeList_cookies.push(light_item);
-  //   }
-  //
-  //   console.log(" *** BÖRJAN :: Kommer in i updateCookie 1");
-  //   console.log(" PRINTAR user_cookie:");
-  //   console.log(user_cookie);
-  //   console.log(" PRINTAR currentItem_cookie:");
-  //   console.log(currentItem_cookie);
-  //   console.log(" PRINTAR itemList_cookies:");
-  //   console.log(itemList_cookies);
-  //   console.log(" PRINTAR completeList_cookies:");
-  //   console.log(completeList_cookies);
-  //
-  //   console.log(" *** SLUTET :: Kommer in i updateCookie 2");
-  //
-  //
-  //   var expireDate = new Date();
-  //   expireDate.setDate(expireDate.getDate() + 20);
-  //
-  //   $cookies.putObject('itemList_cookies', itemList_cookies, {'expires': expireDate});
-  //   $cookies.putObject('completeList_cookies', completeList_cookies, {'expires': expireDate});
-  //   $cookies.putObject('currentItem_cookie', currentItem_cookie, {'expires': expireDate});
-  //   $cookies.putObject('user_cookie', user_cookie, {'expires': expireDate});
-  // }
-
-
-
-  // GAMLA UPDATELIST_COOKIES SOM FUNKAR PERFEKT
-  // GAMLA UPDATELIST_COOKIES SOM FUNKAR PERFEKT
-  // GAMLA UPDATELIST_COOKIES SOM FUNKAR PERFEKT
-  //
-  //
-  // var updateCookie_lists = function() {
-  //
-  //   var itemList_cookies = [];
-  //   var completeList_cookies = [];
-  //
-  //   for (var k = 0; k<itemList.length;k++) {
-  //     light_item = {};
-  //     light_item.name = itemList[k].name
-  //     light_item.amount = itemList[k].amount
-  //     light_item.unit = itemList[k].unit
-  //     light_item.id = itemList[k].id
-  //     itemList_cookies.push(light_item);
-  //   }
-  //
-  //
-  //   for (var k = 0; k<completeList.length;k++) {
-  //     light_item = {};
-  //     light_item.name = completeList[k].name
-  //     light_item.amount = completeList[k].amount
-  //     light_item.unit = completeList[k].unit
-  //     light_item.id = completeList[k].id
-  //     completeList_cookies.push(light_item);
-  //   }
-  //
-  //   var expireDate = new Date();
-  //   expireDate.setDate(expireDate.getDate() + 20);
-  //
-  //   $cookies.putObject('itemList_cookies', itemList_cookies, {'expires': expireDate});
-  //   $cookies.putObject('completeList_cookies', completeList_cookies, {'expires': expireDate});
-  // }

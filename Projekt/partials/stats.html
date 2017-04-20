@@ -9,8 +9,12 @@
     <label class="statsChartLabel">Nuvarande inköpslista</label>
   </div>
 
-  <div class='col-xs-12 statsCanvas'>
+  <div ng-show="chartExists()"class='col-xs-12 statsCanvas'>
     <canvas id="statChart1" width="100" height="100"></canvas>
+  </div>
+
+  <div ng-show="!chartExists()"class='col-xs-12 statsCanvas'>
+    <i>Lägg till varor i din inköpslista för att se statistik!</i>
   </div>
 
 

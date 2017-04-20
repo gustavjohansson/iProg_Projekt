@@ -3,30 +3,30 @@ carbonListApp.controller('SpecificCtrl', function ($scope, $http, $timeout, $rou
 
   Carbon.setCurrentItem($routeParams.itemId);
 
-$scope.itemAlreadyInFav = function(item){
-  return Carbon.itemAlreadyInFav(item);
-}
-
-
-$scope.addOrRemoveItemFromFav = function(item){
-  $scope.removed = "";
-  $scope.added = "";
-
-  var alreadyInFavList = Carbon.addOrRemoveItemFromFav(item);
-
-  if (alreadyInFavList) {
-    $scope.removed = item.name + " togs bort som favorit!";
-    $timeout(function() {
-      $scope.removed = "";
-    }, 2000);
+  $scope.itemAlreadyInFav = function(item){
+    return Carbon.itemAlreadyInFav(item);
   }
-  else {
-    $scope.added = item.name + " lades till som favorit";
-    $timeout(function() {
-      $scope.added = "";
-    }, 2000);
+
+
+  $scope.addOrRemoveItemFromFav = function(item){
+    $scope.removed = "";
+    $scope.added = "";
+
+    var alreadyInFavList = Carbon.addOrRemoveItemFromFav(item);
+
+    if (alreadyInFavList) {
+      $scope.removed = item.name + " togs bort som favorit!";
+      $timeout(function() {
+        $scope.removed = "";
+      }, 2000);
+    }
+    else {
+      $scope.added = item.name + " lades till som favorit";
+      $timeout(function() {
+        $scope.added = "";
+      }, 2000);
+    }
   }
-}
 
   $scope.uid = Carbon.getFirebaseUserUID();
   $scope.specificItem = Carbon.getCurrentItem();
@@ -49,35 +49,26 @@ $scope.addOrRemoveItemFromFav = function(item){
       $scope.errorChange = "Ingen ändring gjordes! Du måste fylla i både mängd och enhet för att ändra.";
     }
     else {
-    var itemChanged = Carbon.updateItemForUser(amount, unit, $scope.specificItem)
-    itemChanged.then(function() {
-      $scope.succesfulChange = "Uppdateringen genomförd!";
+      var itemChanged = Carbon.updateItemForUser(amount, unit, $scope.specificItem)
+      itemChanged.then(function() {
+        $scope.succesfulChange = "Uppdateringen genomförd!";
         $scope.specificItem = Carbon.getCurrentItem();
         $scope.doughnutChart();
-    }, function(reason) {
-      $scope.errorChange = "Ingen ändring gjordes! Du måste fylla i både mängd och enhet för att ändra.";
-    })
+      }, function(reason) {
+        $scope.errorChange = "Ingen ändring gjordes! Du måste fylla i både mängd och enhet för att ändra.";
+      })
+    }
   }
+
+  $scope.doughnutChart = function() {
+    var ctx = angular.element(document).find("#myChart");
+    Carbon.createChart(ctx, "doughnut", false, "specific");
+
   }
 
-$scope.doughnutChart = function() {
-  var ctx = angular.element(document).find("#myChart");
-  Carbon.createChart(ctx, "doughnut", false, "specific");
-
-  // Carbon.createChart(ctx, type, userData, specialType);
-  // var data = Carbon.getDoughnutChartData("specific");
-  // var options = Carbon.getChartOptions();
-  //
-  //   var myDoughnutChart = new Chart(ctx, {
-  //       type: 'doughnut',
-  //       data: data,
-  //       options: options
-  //   });
-}
-
-$timeout(function() {
-  $scope.doughnutChart();
-}, 1000);
+  $timeout(function() {
+    $scope.doughnutChart();
+  }, 1000);
 
 
 });

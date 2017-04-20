@@ -8,6 +8,16 @@ carbonListApp.controller('StatsCtrl', function ($scope, $http, $timeout, $routeP
   $scope.checkList = Carbon.getCheckList();
   $scope.testItter = Carbon.itemsHistory();
 
+  $scope.chartExists = function(){
+    var statInfo = Carbon.getStatInfoForCurrentPurchase();
+    if (statInfo[0].length == 0 || statInfo[1].length == 0) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  }
+
   $scope.totCarbon = function(){
     return Carbon.getTotalCarbon($scope.specificItem.id);
   }
